@@ -21,4 +21,6 @@ Real time data would be written in a time serie database or presented immediatel
 - simple view for recorded data
 
 
+# References
 
+- https://grpc.io/docs/languages/go/basics/

@@ -1,0 +1,38 @@
+message TelemetryData {
+  string session_id = 1;
+  int64 timestamp = 2; // epoch millis
+
+  double latitude = 3;
+  double longitude = 4;
+  double altitude = 5;
+
+  float speed_kph = 6;
+  float acceleration = 7;
+}
+
+message Ack {
+  string message = 1;
+}
+
+message StartSessionRequest {
+  string bike_id = 1;
+}
+
+message StartSessionResponse {
+  string session_id = 1;
+}
+
+message SessionId {
+  string session_id = 1;
+}
+
+message TelemetryLog {
+  repeated TelemetryData data_points = 1;
+}
+
+service MotoTrack {
+  rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
+  rpc EndSession(SessionId) returns (Ack);
+  rpc StreamTelemetry(stream TelemetryData) returns (Ack);
+  rpc GetSessionData(SessionId) returns (TelemetryLog);
+}
