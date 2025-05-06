@@ -1,3 +1,16 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/ademar-prothon/mom/proto;proto" ;
+
+service MotoTrack {
+  rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
+  rpc EndSession(SessionId) returns (Ack);
+  rpc StreamTelemetry(stream TelemetryData) returns (Ack);
+  rpc GetSessionData(SessionId) returns (TelemetryLog);
+}
+
 message TelemetryData {
   string session_id = 1;
   int64 timestamp = 2; // epoch millis
@@ -28,11 +41,4 @@ message SessionId {
 
 message TelemetryLog {
   repeated TelemetryData data_points = 1;
-}
-
-service MotoTrack {
-  rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
-  rpc EndSession(SessionId) returns (Ack);
-  rpc StreamTelemetry(stream TelemetryData) returns (Ack);
-  rpc GetSessionData(SessionId) returns (TelemetryLog);
 }
