@@ -289,27 +289,28 @@ func (x *SessionId) GetSessionId() string {
 	return ""
 }
 
-type TelemetryLog struct {
+type Session struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DataPoints    []*TelemetryData       `protobuf:"bytes,1,rep,name=data_points,json=dataPoints,proto3" json:"data_points,omitempty"`
+	Id            *SessionId             `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	DataPoints    []*TelemetryData       `protobuf:"bytes,2,rep,name=data_points,json=dataPoints,proto3" json:"data_points,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *TelemetryLog) Reset() {
-	*x = TelemetryLog{}
+func (x *Session) Reset() {
+	*x = Session{}
 	mi := &file_proto_telemetry_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *TelemetryLog) String() string {
+func (x *Session) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TelemetryLog) ProtoMessage() {}
+func (*Session) ProtoMessage() {}
 
-func (x *TelemetryLog) ProtoReflect() protoreflect.Message {
+func (x *Session) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_telemetry_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -321,12 +322,19 @@ func (x *TelemetryLog) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TelemetryLog.ProtoReflect.Descriptor instead.
-func (*TelemetryLog) Descriptor() ([]byte, []int) {
+// Deprecated: Use Session.ProtoReflect.Descriptor instead.
+func (*Session) Descriptor() ([]byte, []int) {
 	return file_proto_telemetry_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *TelemetryLog) GetDataPoints() []*TelemetryData {
+func (x *Session) GetId() *SessionId {
+	if x != nil {
+		return x.Id
+	}
+	return nil
+}
+
+func (x *Session) GetDataPoints() []*TelemetryData {
 	if x != nil {
 		return x.DataPoints
 	}
@@ -356,18 +364,19 @@ const file_proto_telemetry_proto_rawDesc = "" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\"*\n" +
 	"\tSessionId\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"E\n" +
-	"\fTelemetryLog\x125\n" +
-	"\vdata_points\x18\x01 \x03(\v2\x14.proto.TelemetryDataR\n" +
-	"dataPoints2\xf0\x01\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"b\n" +
+	"\aSession\x12 \n" +
+	"\x02id\x18\x01 \x01(\v2\x10.proto.SessionIdR\x02id\x125\n" +
+	"\vdata_points\x18\x02 \x03(\v2\x14.proto.TelemetryDataR\n" +
+	"dataPoints2\xeb\x01\n" +
 	"\tMotoTrack\x12G\n" +
 	"\fStartSession\x12\x1a.proto.StartSessionRequest\x1a\x1b.proto.StartSessionResponse\x12*\n" +
 	"\n" +
 	"EndSession\x12\x10.proto.SessionId\x1a\n" +
 	".proto.Ack\x125\n" +
 	"\x0fStreamTelemetry\x12\x14.proto.TelemetryData\x1a\n" +
-	".proto.Ack(\x01\x127\n" +
-	"\x0eGetSessionData\x12\x10.proto.SessionId\x1a\x13.proto.TelemetryLogB+Z)github.com/ademar-prothon/mom/proto;protob\x06proto3"
+	".proto.Ack(\x01\x122\n" +
+	"\x0eGetSessionData\x12\x10.proto.SessionId\x1a\x0e.proto.SessionB+Z)github.com/ademar-prothon/mom/proto;protob\x06proto3"
 
 var (
 	file_proto_telemetry_proto_rawDescOnce sync.Once
@@ -388,23 +397,24 @@ var file_proto_telemetry_proto_goTypes = []any{
 	(*StartSessionRequest)(nil),  // 2: proto.StartSessionRequest
 	(*StartSessionResponse)(nil), // 3: proto.StartSessionResponse
 	(*SessionId)(nil),            // 4: proto.SessionId
-	(*TelemetryLog)(nil),         // 5: proto.TelemetryLog
+	(*Session)(nil),              // 5: proto.Session
 }
 var file_proto_telemetry_proto_depIdxs = []int32{
-	0, // 0: proto.TelemetryLog.data_points:type_name -> proto.TelemetryData
-	2, // 1: proto.MotoTrack.StartSession:input_type -> proto.StartSessionRequest
-	4, // 2: proto.MotoTrack.EndSession:input_type -> proto.SessionId
-	0, // 3: proto.MotoTrack.StreamTelemetry:input_type -> proto.TelemetryData
-	4, // 4: proto.MotoTrack.GetSessionData:input_type -> proto.SessionId
-	3, // 5: proto.MotoTrack.StartSession:output_type -> proto.StartSessionResponse
-	1, // 6: proto.MotoTrack.EndSession:output_type -> proto.Ack
-	1, // 7: proto.MotoTrack.StreamTelemetry:output_type -> proto.Ack
-	5, // 8: proto.MotoTrack.GetSessionData:output_type -> proto.TelemetryLog
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: proto.Session.id:type_name -> proto.SessionId
+	0, // 1: proto.Session.data_points:type_name -> proto.TelemetryData
+	2, // 2: proto.MotoTrack.StartSession:input_type -> proto.StartSessionRequest
+	4, // 3: proto.MotoTrack.EndSession:input_type -> proto.SessionId
+	0, // 4: proto.MotoTrack.StreamTelemetry:input_type -> proto.TelemetryData
+	4, // 5: proto.MotoTrack.GetSessionData:input_type -> proto.SessionId
+	3, // 6: proto.MotoTrack.StartSession:output_type -> proto.StartSessionResponse
+	1, // 7: proto.MotoTrack.EndSession:output_type -> proto.Ack
+	1, // 8: proto.MotoTrack.StreamTelemetry:output_type -> proto.Ack
+	5, // 9: proto.MotoTrack.GetSessionData:output_type -> proto.Session
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_proto_telemetry_proto_init() }

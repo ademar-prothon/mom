@@ -32,7 +32,7 @@ type MotoTrackClient interface {
 	StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
 	EndSession(ctx context.Context, in *SessionId, opts ...grpc.CallOption) (*Ack, error)
 	StreamTelemetry(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[TelemetryData, Ack], error)
-	GetSessionData(ctx context.Context, in *SessionId, opts ...grpc.CallOption) (*TelemetryLog, error)
+	GetSessionData(ctx context.Context, in *SessionId, opts ...grpc.CallOption) (*Session, error)
 }
 
 type motoTrackClient struct {
@@ -76,9 +76,9 @@ func (c *motoTrackClient) StreamTelemetry(ctx context.Context, opts ...grpc.Call
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type MotoTrack_StreamTelemetryClient = grpc.ClientStreamingClient[TelemetryData, Ack]
 
-func (c *motoTrackClient) GetSessionData(ctx context.Context, in *SessionId, opts ...grpc.CallOption) (*TelemetryLog, error) {
+func (c *motoTrackClient) GetSessionData(ctx context.Context, in *SessionId, opts ...grpc.CallOption) (*Session, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TelemetryLog)
+	out := new(Session)
 	err := c.cc.Invoke(ctx, MotoTrack_GetSessionData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -93,7 +93,7 @@ type MotoTrackServer interface {
 	StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
 	EndSession(context.Context, *SessionId) (*Ack, error)
 	StreamTelemetry(grpc.ClientStreamingServer[TelemetryData, Ack]) error
-	GetSessionData(context.Context, *SessionId) (*TelemetryLog, error)
+	GetSessionData(context.Context, *SessionId) (*Session, error)
 	mustEmbedUnimplementedMotoTrackServer()
 }
 
@@ -113,7 +113,7 @@ func (UnimplementedMotoTrackServer) EndSession(context.Context, *SessionId) (*Ac
 func (UnimplementedMotoTrackServer) StreamTelemetry(grpc.ClientStreamingServer[TelemetryData, Ack]) error {
 	return status.Errorf(codes.Unimplemented, "method StreamTelemetry not implemented")
 }
-func (UnimplementedMotoTrackServer) GetSessionData(context.Context, *SessionId) (*TelemetryLog, error) {
+func (UnimplementedMotoTrackServer) GetSessionData(context.Context, *SessionId) (*Session, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSessionData not implemented")
 }
 func (UnimplementedMotoTrackServer) mustEmbedUnimplementedMotoTrackServer() {}
